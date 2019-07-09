@@ -8,7 +8,14 @@ public class Task {
     @PrimaryKey(autoGenerate = true)
     public long id;
 
+
     public String text;
 
     public boolean status;
+
+    public Task(String text){
+        this.text=text;
+        status=false;
+    }
+
 }

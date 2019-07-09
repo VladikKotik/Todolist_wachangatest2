@@ -8,13 +8,15 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.ProgressBar;
 
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements DatabaseCallback{
 
     List<Task> tasks;
     RecyclerView recyclerView;
+    DatabaseManager dbmanager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +29,10 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+
+
+
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -36,52 +42,55 @@ public class MainActivity extends AppCompatActivity {
         });
 
         AppDatabase db = App.getInstance().getDatabase();
-        TaskDao taskDao = db.TaskDao();
+        //TaskDao taskDao = db.TaskDao();
 
-       /* Task task1 = new Task();
-        task1.id = 1;
-        task1.text = "rrrrrrrr";
-        task1.status = false;
-
-        Task task2 = new Task();
-        task2.id = 2;
-        task2.text = "ssssssssss";
-        task2.status = false;
-
-        Task task3 = new Task();
-        task3.text = "wwwwwwww";
-        task3.status = false;
-
-        taskDao.insert(task1);
-
-        taskDao.insert(task2);
-        taskDao.insert(task3);*/
-
-        //tasks=taskDao.getAll();
-
-//        db.TaskDao().getAll()
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(new Consumer<List<Task>>() {
-//                    @Override
-//                    public void accept(List<Task> tasks1) throws Exception {
-//                        // ...
-//                        tasks = tasks1;
-//                    }
-//                });
-
-
-        tasks=taskDao.getAll();// отобразил ток один!!!
+        //ProgressBar progressBar = (ProgressBar) findViewById(R.id.progressBar);
+       // progressBar.setVisibility(ProgressBar.VISIBLE);
+        //progressBar.
 
         recyclerView = (RecyclerView) findViewById(R.id.tasks_recycle_view);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-        TasksAdapter adapter = new TasksAdapter(this, tasks);
-        recyclerView.setAdapter(adapter);
+        dbmanager = new DatabaseManager(this,db);
 
-        System.out.println(adapter.getItemCount());
+        //вот тут цикл и тип отображать или нет прогрес/статусбар
+
+        //делэй там в нутри на 1сек
+        dbmanager.getTasks(this);
+
+        //progressBar.setVisibility(ProgressBar.INVISIBLE);
+
 
         db.close();
     }
 
+    @Override
+    public void onTasksLoaded(List<Task> tasks) {
+
+
+        TasksAdapter adapter = new TasksAdapter(this, tasks);
+        recyclerView.setAdapter(adapter);
+
+    }
+
+    @Override
+    public void onTaskDeleted() {
+
+    }
+
+    @Override
+    public void onTaskAdded() {
+
+    }
+
+    @Override
+    public void onDataNotAvailable() {
+
+    }
+
+    @Override
+    public void onTaskUpdated() {
+
+    }
 }

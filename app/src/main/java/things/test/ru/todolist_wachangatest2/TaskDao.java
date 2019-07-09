@@ -9,11 +9,13 @@ import android.arch.persistence.room.Update;
 
 import java.util.List;
 
+import io.reactivex.Flowable;
+
 @Dao
 public interface TaskDao {
     @Query("SELECT * FROM task")
-//    Flowable<List<Task>> getAll();
-    List<Task> getAll();
+    Flowable<List<Task>> getAll();
+ //   List<Task> getAll();
 
 
     @Query("SELECT * FROM task WHERE id = :id")
