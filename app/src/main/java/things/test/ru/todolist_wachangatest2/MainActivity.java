@@ -1,5 +1,7 @@
 package things.test.ru.todolist_wachangatest2;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -8,6 +10,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
 import java.util.List;
@@ -30,21 +33,22 @@ public class MainActivity extends AppCompatActivity implements DatabaseCallback{
         setSupportActionBar(toolbar);
 
 
-
+        final Context this_context=this;
 
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "тут переход", Snackbar.LENGTH_LONG).show();
+                //Snackbar.make(view, "тут переход", Snackbar.LENGTH_LONG).show();
+                Intent intent = new Intent(this_context, MainActivity.class);
+                this_context.startActivity(intent);
             }
         });
 
         AppDatabase db = App.getInstance().getDatabase();
         //TaskDao taskDao = db.TaskDao();
 
-        //ProgressBar progressBar = (ProgressBar) findViewById(R.id.progressBar);
        // progressBar.setVisibility(ProgressBar.VISIBLE);
         //progressBar.
 
@@ -59,7 +63,6 @@ public class MainActivity extends AppCompatActivity implements DatabaseCallback{
         //делэй там в нутри на 1сек
         dbmanager.getTasks(this);
 
-        //progressBar.setVisibility(ProgressBar.INVISIBLE);
 
 
         db.close();
@@ -71,6 +74,17 @@ public class MainActivity extends AppCompatActivity implements DatabaseCallback{
 
         TasksAdapter adapter = new TasksAdapter(this, tasks);
         recyclerView.setAdapter(adapter);
+        ProgressBar progressBar = (ProgressBar) findViewById(R.id.progressBar);
+
+        //progressBar.setVisibility(ProgressBar.INVISIBLE);
+
+        //удалить прогрессбар, потом на кнопку переход на эту же активити и тип бует потом прогессбар или нет
+
+//        LinearLayout linearLayout=new LinearLayout(this);
+        LinearLayout linearLayout=(LinearLayout) findViewById(R.id.linear_main);
+        linearLayout.removeView(progressBar);
+
+
 
     }
 
