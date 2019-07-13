@@ -85,7 +85,7 @@ public class DatabaseManager {
     }
 
 
-    public void updateUser(final DatabaseCallback databaseCallback, final Task task) {
+    public void updateTask(final DatabaseCallback databaseCallback, final Task task) {
 
         Completable.fromAction(new Action() {
             @Override

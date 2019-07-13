@@ -10,6 +10,7 @@ import android.arch.persistence.room.Update;
 import java.util.List;
 
 import io.reactivex.Flowable;
+import io.reactivex.Maybe;
 
 @Dao
 public interface TaskDao {
@@ -19,7 +20,7 @@ public interface TaskDao {
 
 
     @Query("SELECT * FROM task WHERE id = :id")
-    Task getById(long id);
+    Maybe<Task> getById(long id);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(Task task);

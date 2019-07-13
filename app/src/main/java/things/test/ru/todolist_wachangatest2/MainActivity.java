@@ -24,13 +24,14 @@ public class MainActivity extends AppCompatActivity implements DatabaseCallback{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        boolean isReady = false;
+        //boolean isReady = false;
 
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_main);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("Заметки, заметочки");
 
 
         final Context this_context=this;
@@ -41,30 +42,23 @@ public class MainActivity extends AppCompatActivity implements DatabaseCallback{
             @Override
             public void onClick(View view) {
                 //Snackbar.make(view, "тут переход", Snackbar.LENGTH_LONG).show();
-                Intent intent = new Intent(this_context, MainActivity.class);
+                Intent intent = new Intent(this_context, EditActivity.class);
+                intent.putExtra("task_ID", -1);
+//                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 this_context.startActivity(intent);
             }
         });
 
         AppDatabase db = App.getInstance().getDatabase();
-        //TaskDao taskDao = db.TaskDao();
-
-       // progressBar.setVisibility(ProgressBar.VISIBLE);
-        //progressBar.
 
         recyclerView = (RecyclerView) findViewById(R.id.tasks_recycle_view);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
+
         dbmanager = new DatabaseManager(this,db);
 
-        //вот тут цикл и тип отображать или нет прогрес/статусбар
-
-        //делэй там в нутри на 1сек
         dbmanager.getTasks(this);
-
-
-
         db.close();
     }
 
@@ -74,13 +68,8 @@ public class MainActivity extends AppCompatActivity implements DatabaseCallback{
 
         TasksAdapter adapter = new TasksAdapter(this, tasks);
         recyclerView.setAdapter(adapter);
+
         ProgressBar progressBar = (ProgressBar) findViewById(R.id.progressBar);
-
-        //progressBar.setVisibility(ProgressBar.INVISIBLE);
-
-        //удалить прогрессбар, потом на кнопку переход на эту же активити и тип бует потом прогессбар или нет
-
-//        LinearLayout linearLayout=new LinearLayout(this);
         LinearLayout linearLayout=(LinearLayout) findViewById(R.id.linear_main);
         linearLayout.removeView(progressBar);
 
