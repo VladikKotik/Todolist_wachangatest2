@@ -26,13 +26,26 @@ public class DatabaseManager {
     }
 
     public void getTasks(final DatabaseCallback databaseCallback) {
-        db.TaskDao().getAll().subscribeOn(Schedulers.io()).delay(3, TimeUnit.SECONDS).observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer<List<Task>>() {
+        db.TaskDao().getAll().subscribeOn(Schedulers.io()).delay(3, TimeUnit.SECONDS)
+                .observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer<List<Task>>() {
             @Override
             public void accept(@io.reactivex.annotations.NonNull List<Task> tasks) throws Exception {
                 databaseCallback.onTasksLoaded(tasks);
 
             }
         });
+    }
+
+    public Task getTaskById(int id) {
+        final Task[] task_needed = {null};
+        db.TaskDao().getById(id).subscribeOn(Schedulers.newThread()).observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<Task>() {
+                    @Override
+            public void accept(@io.reactivex.annotations.NonNull Task task) throws Exception {
+                        task_needed[0] =task;
+                    }
+        });
+        return task_needed[0];
     }
 
     public void addTask(final DatabaseCallback databaseCallback, final String ltext) {
@@ -85,8 +98,10 @@ public class DatabaseManager {
     }
 
 
-    public void updateTask(final DatabaseCallback databaseCallback, final Task task) {
+    public void updateTask(final DatabaseCallback databaseCallback, int id, String new_text_task) {
 
+        final Task task=getTaskById(id);
+        task.text=new_text_task;
         Completable.fromAction(new Action() {
             @Override
             public void run() throws Exception {

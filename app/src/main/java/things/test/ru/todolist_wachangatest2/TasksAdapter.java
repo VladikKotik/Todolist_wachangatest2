@@ -1,6 +1,7 @@
 package things.test.ru.todolist_wachangatest2;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -53,11 +54,13 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.ViewHolder> 
         public void onClick(View view) {
             int position = getAdapterPosition();
             if (position != RecyclerView.NO_POSITION) {
-//                CategoryModel oneCategory = categories.get(position);
-//                Intent intent = new Intent(mContext, ExposActivity.class);
-//                intent.putExtra("category_ID", Integer.parseInt(oneCategory.getID()));
-//                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//                mContext.startActivity(intent);//все активити над прописывать в манифесте!!
+
+                Task oneTask = tasks.get(position);
+                System.out.println("!!!! adapter!!! "+oneTask.id);
+                Intent intent = new Intent(mContext, EditActivity.class);
+                intent.putExtra("task_ID", oneTask.id);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                mContext.startActivity(intent); //все активити над прописывать в манифесте!!
             }
         }
     }
