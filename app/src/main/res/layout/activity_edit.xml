@@ -10,13 +10,24 @@
 <include
     layout="@layout/toolbar"
     />
-
+<RelativeLayout
+    android:id="@+id/relative_with_buttons"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
     <android.support.v7.widget.AppCompatImageButton
+        android:id="@+id/save_exit_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@android:drawable/ic_menu_save"
         android:onClick="save_exit"/>
-
+    <android.support.v7.widget.AppCompatImageButton
+        android:id="@+id/delete_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="80dp"
+        android:src="@android:drawable/ic_menu_delete"
+        android:onClick="delete"/>
+</RelativeLayout>
 
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"

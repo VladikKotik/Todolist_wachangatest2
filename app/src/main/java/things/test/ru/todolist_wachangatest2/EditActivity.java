@@ -4,9 +4,12 @@ import android.content.Intent;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.AppCompatImageButton;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import java.util.List;
 
@@ -17,6 +20,7 @@ public class EditActivity extends AppCompatActivity implements DatabaseCallback{
     DatabaseManager dbmanager;
     AppDatabase db;
     TextInputEditText text_field;
+    AppCompatImageButton delete_button;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +31,7 @@ public class EditActivity extends AppCompatActivity implements DatabaseCallback{
         setSupportActionBar(toolbar);
 
        text_field=findViewById(R.id.editText2);
+       delete_button=findViewById(R.id.delete_button);
 
         db = App.getInstance().getDatabase();
         dbmanager = new DatabaseManager(this,db);
@@ -36,11 +41,15 @@ public class EditActivity extends AppCompatActivity implements DatabaseCallback{
         //System.out.println("!!!!!!!!!!!! activity!  "+task_id);
         if(this_task==null){
             getSupportActionBar().setTitle("Новая заметка");
+            RelativeLayout relativeLayout=findViewById(R.id.relative_with_buttons);
+            relativeLayout.removeView(delete_button);
+
         }
         else{
             getSupportActionBar().setTitle("Заметка");
-            //text_field.setText(dbmanager.getTaskById(task_id).text);// NPE null!!!
+
             text_field.setText(this_task.text);
+
         }
 
     }
@@ -70,6 +79,11 @@ public class EditActivity extends AppCompatActivity implements DatabaseCallback{
         }
 
 
+    }
+
+    public void delete(View view) {
+
+        dbmanager.deleteTask(this,this_task);
     }
 
     @Override
@@ -106,4 +120,5 @@ public class EditActivity extends AppCompatActivity implements DatabaseCallback{
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
     }
+
 }
