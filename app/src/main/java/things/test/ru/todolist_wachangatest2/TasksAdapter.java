@@ -58,7 +58,8 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.ViewHolder> 
                 Task oneTask = tasks.get(position);
                 System.out.println("!!!! adapter!!! "+oneTask.id);
                 Intent intent = new Intent(mContext, EditActivity.class);
-                intent.putExtra("task_ID", oneTask.id);
+//                intent.putExtra("task_ID", (int)oneTask.id);
+                intent.putExtra("task", oneTask);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 mContext.startActivity(intent); //все активити над прописывать в манифесте!!
             }

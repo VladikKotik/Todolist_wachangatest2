@@ -36,15 +36,27 @@ public class DatabaseManager {
         });
     }
 
-    public Task getTaskById(int id) {
+    public Task getTaskById(int id) { //null
         final Task[] task_needed = {null};
-        db.TaskDao().getById(id).subscribeOn(Schedulers.newThread()).observeOn(AndroidSchedulers.mainThread())
+        db.TaskDao().getById((long)id).subscribeOn(Schedulers.newThread()).observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<Task>() {
                     @Override
-            public void accept(@io.reactivex.annotations.NonNull Task task) throws Exception {
+            public void accept(@io.reactivex.annotations.NonNull Task task) throws Exception {//сюда не заходит вообще
                         task_needed[0] =task;
+                        if(task !=null){
+                            System.out.println("accept_not null");
+                        }
+                        else{
+                            System.out.println("accept_null");
+                        }
                     }
         });
+        if(task_needed[0] !=null){
+            System.out.println("not null");
+        }
+        else{
+            System.out.println("null");
+        }
         return task_needed[0];
     }
 
@@ -98,10 +110,8 @@ public class DatabaseManager {
     }
 
 
-    public void updateTask(final DatabaseCallback databaseCallback, int id, String new_text_task) {
+    public void updateTask(final DatabaseCallback databaseCallback, final Task task) {
 
-        final Task task=getTaskById(id);
-        task.text=new_text_task;
         Completable.fromAction(new Action() {
             @Override
             public void run() throws Exception {
