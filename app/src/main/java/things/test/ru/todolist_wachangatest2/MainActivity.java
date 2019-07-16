@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity implements DatabaseCallback{
         dbmanager = new DatabaseManager(this,db);
 
         dbmanager.getTasks(this);
-        db.close();
+       // db.close();
     }
 
     @Override

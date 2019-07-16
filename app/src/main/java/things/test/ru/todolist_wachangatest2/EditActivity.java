@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v7.widget.AppCompatImageButton;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -33,10 +34,11 @@ public class EditActivity extends AppCompatActivity implements DatabaseCallback{
        text_field=findViewById(R.id.editText2);
        delete_button=findViewById(R.id.delete_button);
 
+
+
         db = App.getInstance().getDatabase();
         dbmanager = new DatabaseManager(this,db);
 
-//        task_id=getIntent().getIntExtra("task_ID",-1);
         this_task=getIntent().getParcelableExtra("task");
         //System.out.println("!!!!!!!!!!!! activity!  "+task_id);
         if(this_task==null){
@@ -51,6 +53,7 @@ public class EditActivity extends AppCompatActivity implements DatabaseCallback{
             text_field.setText(this_task.text);
 
         }
+
 
     }
 
@@ -115,7 +118,7 @@ public class EditActivity extends AppCompatActivity implements DatabaseCallback{
     }
 
     public void exit(){
-        db.close();
+      //  db.close();
         Intent intent = new Intent(this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
