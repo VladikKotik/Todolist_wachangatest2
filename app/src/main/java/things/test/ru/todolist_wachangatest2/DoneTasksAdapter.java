@@ -6,16 +6,17 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import java.util.List;
 
-public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.ViewHolder> {
+public class DoneTasksAdapter extends RecyclerView.Adapter<DoneTasksAdapter.ViewHolder> {
 
     private List<Task> tasks;
     private Context mContext;
 
-    public TasksAdapter(Context context, List<Task> tasks) {
+    public DoneTasksAdapter(Context context, List<Task> tasks) {
         this.tasks = tasks;
         mContext = context;
     }
@@ -30,6 +31,7 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.ViewHolder> 
     public void onBindViewHolder(ViewHolder holder, int position) {
         Task task = tasks.get(position);
         holder.text.setText(task.text);
+        holder.checkBox.setChecked(true);
 
     }
 
@@ -43,25 +45,41 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.ViewHolder> 
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         TextView text;
+        CheckBox checkBox;
 
         public ViewHolder(View itemView) {
             super(itemView);
             text = (TextView) itemView.findViewById(R.id.task_text);
+            checkBox=(CheckBox) itemView.findViewById(R.id.task_status);
             itemView.setOnClickListener(this);
+            checkBox.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View view) {
             int position = getAdapterPosition();
-            if (position != RecyclerView.NO_POSITION) {
+            if (view.getId() == checkBox.getId()) {
+                if (position != RecyclerView.NO_POSITION) {
 
-                Task oneTask = tasks.get(position);
-                System.out.println("!!!! adapter!!! "+oneTask.id);
-                Intent intent = new Intent(mContext, EditActivity.class);
+                    Task oneTask = tasks.get(position);
+
+                    //if(!checkBox.isChecked()){
+                        oneTask.status=false;
+                    //}
+                    ((MainActivity)mContext).onStatusChanged(oneTask);
+                }
+            }
+            else {
+                if (position != RecyclerView.NO_POSITION) {
+
+                    Task oneTask = tasks.get(position);
+                    System.out.println("!!!! adapter!!! " + oneTask.status);
+                    Intent intent = new Intent(mContext, EditActivity.class);
 //                intent.putExtra("task_ID", (int)oneTask.id);
-                intent.putExtra("task", oneTask);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                mContext.startActivity(intent); //все активити над прописывать в манифесте!!
+                    intent.putExtra("task", oneTask);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    mContext.startActivity(intent); //все активити над прописывать в манифесте!!
+                }
             }
         }
     }

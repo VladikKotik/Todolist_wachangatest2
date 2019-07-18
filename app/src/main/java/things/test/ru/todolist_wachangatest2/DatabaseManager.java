@@ -26,7 +26,7 @@ public class DatabaseManager {
     }
 
     public void getTasks(final DatabaseCallback databaseCallback) {
-        db.TaskDao().getAll().subscribeOn(Schedulers.io()).delay(3, TimeUnit.SECONDS)
+        db.TaskDao().getAll().subscribeOn(Schedulers.io()).delay(1, TimeUnit.SECONDS)
                 .observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer<List<Task>>() {
             @Override
             public void accept(@io.reactivex.annotations.NonNull List<Task> tasks) throws Exception {
@@ -36,29 +36,29 @@ public class DatabaseManager {
         });
     }
 
-    public Task getTaskById(int id) { //null
-        final Task[] task_needed = {null};
-        db.TaskDao().getById((long)id).subscribeOn(Schedulers.newThread()).observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<Task>() {
-                    @Override
-            public void accept(@io.reactivex.annotations.NonNull Task task) throws Exception {//сюда не заходит вообще
-                        task_needed[0] =task;
-                        if(task !=null){
-                            System.out.println("accept_not null");
-                        }
-                        else{
-                            System.out.println("accept_null");
-                        }
-                    }
-        });
-        if(task_needed[0] !=null){
-            System.out.println("not null");
-        }
-        else{
-            System.out.println("null");
-        }
-        return task_needed[0];
-    }
+//    public Task getTaskById(int id) { //null
+//        final Task[] task_needed = {null};
+//        db.TaskDao().getById((long)id).subscribeOn(Schedulers.newThread()).observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(new Consumer<Task>() {
+//                    @Override
+//            public void accept(@io.reactivex.annotations.NonNull Task task) throws Exception {//сюда не заходит вообще
+//                        task_needed[0] =task;
+//                        if(task !=null){
+//                            System.out.println("accept_not null");
+//                        }
+//                        else{
+//                            System.out.println("accept_null");
+//                        }
+//                    }
+//        });
+//        if(task_needed[0] !=null){
+//            System.out.println("not null");
+//        }
+//        else{
+//            System.out.println("null");
+//        }
+//        return task_needed[0];
+//    }
 
     public void addTask(final DatabaseCallback databaseCallback, final String ltext) {
         Completable.fromAction(new Action() {

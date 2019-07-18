@@ -35,6 +35,13 @@
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:orientation="vertical" />
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/done_tasks_recycle_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="#f48"/>
+
     </LinearLayout>
 
     <android.support.design.widget.FloatingActionButton

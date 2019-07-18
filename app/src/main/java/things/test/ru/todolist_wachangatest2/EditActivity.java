@@ -40,6 +40,8 @@ public class EditActivity extends AppCompatActivity implements DatabaseCallback{
         dbmanager = new DatabaseManager(this,db);
 
         this_task=getIntent().getParcelableExtra("task");
+        //System.out.println("status:  "+this_task.status);
+
         //System.out.println("!!!!!!!!!!!! activity!  "+task_id);
         if(this_task==null){
             getSupportActionBar().setTitle("Новая заметка");

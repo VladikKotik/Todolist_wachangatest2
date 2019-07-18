@@ -3,9 +3,11 @@ package things.test.ru.todolist_wachangatest2;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -13,12 +15,17 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 
 public class MainActivity extends AppCompatActivity implements DatabaseCallback{
 
     List<Task> tasks;
     RecyclerView recyclerView;
+    RecyclerView doneTasks_recyclerView;
     DatabaseManager dbmanager;
 
     @Override
@@ -55,6 +62,9 @@ public class MainActivity extends AppCompatActivity implements DatabaseCallback{
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
+        doneTasks_recyclerView = (RecyclerView) findViewById(R.id.done_tasks_recycle_view);
+        LinearLayoutManager layoutManager2 = new LinearLayoutManager(this);
+        doneTasks_recyclerView.setLayoutManager(layoutManager2);
 
         dbmanager = new DatabaseManager(this,db);
 
@@ -62,17 +72,48 @@ public class MainActivity extends AppCompatActivity implements DatabaseCallback{
        // db.close();
     }
 
+    public void onStatusChanged(Task task){
+
+        dbmanager.updateTask(this,task);
+        dbmanager.getTasks(this);
+    }
+
     @Override
     public void onTasksLoaded(List<Task> tasks) {
 
 
-        TasksAdapter adapter = new TasksAdapter(this, tasks);
+//        Task task1=new Task("s");
+//        List<Task> done_tasks = null;
+//        done_tasks.add(task1);
+
+        ArrayList<Task> done_tasks=new ArrayList<Task>();
+        ArrayList<Task> undone_tasks=new ArrayList<Task>();
+
+        for(Task oneTask:tasks){
+            if(oneTask.status){
+                done_tasks.add(oneTask);
+            }
+            else{
+                undone_tasks.add(oneTask);
+            }
+        }
+
+        UnDoneTasksAdapter adapter = new UnDoneTasksAdapter(this, undone_tasks);
         recyclerView.setAdapter(adapter);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+
+        DoneTasksAdapter doneTasksAdapter=new DoneTasksAdapter(this,done_tasks);
+        doneTasks_recyclerView.setAdapter(doneTasksAdapter);
+        doneTasks_recyclerView.setItemAnimator(new DefaultItemAnimator());
+
 
         ProgressBar progressBar = (ProgressBar) findViewById(R.id.progressBar);
-        LinearLayout linearLayout=(LinearLayout) findViewById(R.id.linear_main);
-        linearLayout.removeView(progressBar);
 
+
+        if(progressBar!=null) {
+            LinearLayout linearLayout = (LinearLayout) findViewById(R.id.linear_main);
+            linearLayout.removeView(progressBar);
+        }
 
 
     }
@@ -94,6 +135,6 @@ public class MainActivity extends AppCompatActivity implements DatabaseCallback{
 
     @Override
     public void onTaskUpdated() {
-
+        dbmanager.getTasks(this);
     }
 }

@@ -48,6 +48,6 @@ public class Task implements Parcelable {
 
         parcel.writeLong(id);
         parcel.writeString(text);
-        parcel.writeBooleanArray(new boolean[]{status});
+        parcel.writeByte((byte) (status ? 1 : 0));
     }
 }
