@@ -41,8 +41,11 @@
 
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="заметка"
-            android:inputType="textCapSentences"/>
+            android:overScrollMode="always"
+            android:scrollbarStyle="insideInset"
+            android:scrollbars="vertical"
+            android:hint="текст заметки"
+            android:inputType="textCapSentences|textMultiLine"/>
     </android.support.design.widget.TextInputLayout>
 
 

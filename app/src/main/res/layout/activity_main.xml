@@ -4,12 +4,25 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/main_coordintator"
     tools:context=".MainActivity">
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:visibility="visible"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:indeterminate="true"
+        android:layout_centerInParent="true"
+        />
 
-    <LinearLayout
+
+    <ScrollView
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content">
+    <RelativeLayout
         android:id="@+id/linear_main"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <android.support.v7.widget.Toolbar
@@ -20,29 +33,23 @@
             app:popupTheme="@style/AppTheme.PopupOverlay" />
 
 
-        <ProgressBar
-            android:id="@+id/progressBar"
-            android:visibility="visible"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:indeterminate="true"
-            android:layout_centerInParent="true"
-            />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/tasks_recycle_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
+            android:layout_below="@+id/toolbar_main"
             android:orientation="vertical" />
         <android.support.v7.widget.RecyclerView
             android:id="@+id/done_tasks_recycle_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/tasks_recycle_view"
             android:orientation="vertical"
-            android:background="#f48"/>
+            android:alpha="0.5"/>
 
-    </LinearLayout>
+    </RelativeLayout>
+    </ScrollView>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"

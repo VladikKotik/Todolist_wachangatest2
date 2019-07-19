@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -14,6 +15,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -111,8 +113,13 @@ public class MainActivity extends AppCompatActivity implements DatabaseCallback{
 
 
         if(progressBar!=null) {
-            LinearLayout linearLayout = (LinearLayout) findViewById(R.id.linear_main);
-            linearLayout.removeView(progressBar);
+           // LinearLayout linearLayout = (LinearLayout) findViewById(R.id.linear_main);
+            //RelativeLayout relativeLayout=findViewById(R.id.linear_main);
+            //linearLayout.removeView(progressBar);
+            //relativeLayout.removeView(progressBar);
+
+            CoordinatorLayout coordinatorLayout=(CoordinatorLayout)findViewById(R.id.main_coordintator);
+            coordinatorLayout.removeView(progressBar);
         }
 
 
