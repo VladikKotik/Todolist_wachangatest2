@@ -1,5 +1,6 @@
 package things.test.ru.todolist_wachangatest2;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -29,12 +31,15 @@ public class MainActivity extends AppCompatActivity implements DatabaseCallback{
     RecyclerView recyclerView;
     RecyclerView doneTasks_recyclerView;
     DatabaseManager dbmanager;
+    boolean doneShown;
+    Button showDoneButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         //boolean isReady = false;
 
+        doneShown=true;
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -68,10 +73,27 @@ public class MainActivity extends AppCompatActivity implements DatabaseCallback{
         LinearLayoutManager layoutManager2 = new LinearLayoutManager(this);
         doneTasks_recyclerView.setLayoutManager(layoutManager2);
 
+        showDoneButton=findViewById(R.id.show_done_button);
+
         dbmanager = new DatabaseManager(this,db);
 
         dbmanager.getTasks(this);
        // db.close();
+    }
+
+
+    public void showDone(View view) { //or unshow)))
+        if(doneShown){
+            doneTasks_recyclerView.setVisibility(View.GONE);
+            showDoneButton.setText("Показать выполненные");
+            doneShown=false;
+        }
+        else{
+            doneTasks_recyclerView.setVisibility(View.VISIBLE);
+            showDoneButton.setText("Скрыть выполненные");
+            doneShown=true;
+
+        }
     }
 
     public void onStatusChanged(Task task){
@@ -144,4 +166,6 @@ public class MainActivity extends AppCompatActivity implements DatabaseCallback{
     public void onTaskUpdated() {
         dbmanager.getTasks(this);
     }
+
+
 }

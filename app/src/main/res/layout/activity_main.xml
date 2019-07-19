@@ -19,7 +19,7 @@
     <ScrollView
         android:layout_height="wrap_content"
         android:layout_width="wrap_content">
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/linear_main"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -32,23 +32,27 @@
             android:background="?attr/colorPrimary"
             app:popupTheme="@style/AppTheme.PopupOverlay" />
 
+        <Button
+            android:id="@+id/show_done_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Скрыть выполненные"
+            android:onClick="showDone"/>
 
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/tasks_recycle_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/toolbar_main"
             android:orientation="vertical" />
         <android.support.v7.widget.RecyclerView
             android:id="@+id/done_tasks_recycle_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/tasks_recycle_view"
             android:orientation="vertical"
             android:alpha="0.5"/>
 
-    </RelativeLayout>
+    </LinearLayout>
     </ScrollView>
 
     <android.support.design.widget.FloatingActionButton
