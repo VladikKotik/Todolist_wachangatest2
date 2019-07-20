@@ -75,6 +75,7 @@ public class MainActivity extends AppCompatActivity implements DatabaseCallback{
 
         showDoneButton=findViewById(R.id.show_done_button);
 
+
         dbmanager = new DatabaseManager(this,db);
 
         dbmanager.getTasks(this);
@@ -131,6 +132,7 @@ public class MainActivity extends AppCompatActivity implements DatabaseCallback{
         doneTasks_recyclerView.setItemAnimator(new DefaultItemAnimator());
 
 
+
         ProgressBar progressBar = (ProgressBar) findViewById(R.id.progressBar);
 
 
@@ -143,7 +145,12 @@ public class MainActivity extends AppCompatActivity implements DatabaseCallback{
             CoordinatorLayout coordinatorLayout=(CoordinatorLayout)findViewById(R.id.main_coordintator);
             coordinatorLayout.removeView(progressBar);
         }
-
+        if(done_tasks.size()!=0){
+            showDoneButton.setVisibility(View.VISIBLE);
+        }
+        else{
+            showDoneButton.setVisibility(View.GONE);
+        }
 
     }
 
