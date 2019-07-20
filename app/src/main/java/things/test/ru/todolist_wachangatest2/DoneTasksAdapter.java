@@ -2,6 +2,7 @@ package things.test.ru.todolist_wachangatest2;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Paint;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -50,6 +51,7 @@ public class DoneTasksAdapter extends RecyclerView.Adapter<DoneTasksAdapter.View
         public ViewHolder(View itemView) {
             super(itemView);
             text = (TextView) itemView.findViewById(R.id.task_text);
+            text.setPaintFlags(text.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG); //someTextView.
             checkBox=(CheckBox) itemView.findViewById(R.id.task_status);
             itemView.setOnClickListener(this);
             checkBox.setOnClickListener(this);
