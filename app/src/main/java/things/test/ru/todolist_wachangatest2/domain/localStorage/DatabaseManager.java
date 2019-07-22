@@ -1,6 +1,5 @@
-package things.test.ru.todolist_wachangatest2;
+package things.test.ru.todolist_wachangatest2.domain.localStorage;
 
-import android.arch.persistence.room.Room;
 import android.content.Context;
 
 import java.util.List;
@@ -13,6 +12,8 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
+import things.test.ru.todolist_wachangatest2.app.AppDatabase;
+import things.test.ru.todolist_wachangatest2.domain.model.Task;
 
 public class DatabaseManager {
     private static final String DB_NAME = "database-name";
@@ -65,6 +66,7 @@ public class DatabaseManager {
             @Override
             public void run() throws Exception {
                 Task task = new Task(ltext);
+               // System.out.println(task.id);
                 db.TaskDao().insert(task);
             }
         }).observeOn(AndroidSchedulers.mainThread())

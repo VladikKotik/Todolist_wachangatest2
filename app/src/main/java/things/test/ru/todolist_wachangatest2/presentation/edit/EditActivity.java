@@ -1,11 +1,13 @@
-package things.test.ru.todolist_wachangatest2;
+package things.test.ru.todolist_wachangatest2.presentation.edit;
 
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.BitmapFactory;
+import android.os.Handler;
 import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -13,16 +15,19 @@ import android.os.Bundle;
 import android.support.v7.widget.AppCompatImageButton;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.view.WindowManager;
-import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import java.util.List;
 
-public class EditActivity extends AppCompatActivity implements DatabaseCallback{
+import things.test.ru.todolist_wachangatest2.presentation.main.MainActivity;
+import things.test.ru.todolist_wachangatest2.R;
+import things.test.ru.todolist_wachangatest2.app.App;
+import things.test.ru.todolist_wachangatest2.app.AppDatabase;
+import things.test.ru.todolist_wachangatest2.domain.localStorage.DatabaseCallback;
+import things.test.ru.todolist_wachangatest2.domain.localStorage.DatabaseManager;
+import things.test.ru.todolist_wachangatest2.domain.model.Task;
+
+public class EditActivity extends AppCompatActivity implements DatabaseCallback {
 
     //int task_id;
     Task this_task;
@@ -146,7 +151,7 @@ public class EditActivity extends AppCompatActivity implements DatabaseCallback{
 
         boolean isSet;
 
-        System.out.println(new_task_text);
+        //System.out.println(new_task_text);
 
         if(this_task==null){
             if(new_task_text.length()!=0){
@@ -180,7 +185,7 @@ public class EditActivity extends AppCompatActivity implements DatabaseCallback{
         Resources res = this.getResources();
 
         // до версии Android 8.0 API 26
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
+        final NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
 
         builder.setContentIntent(contentIntent)
                 .setSmallIcon(R.drawable.ic_stat_name)
@@ -194,13 +199,28 @@ public class EditActivity extends AppCompatActivity implements DatabaseCallback{
                 .setWhen(System.currentTimeMillis())
                 .setAutoCancel(true); // автоматически закрыть уведомление после нажатия
 
-        NotificationManager notificationManager =
-                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        builder.setDefaults(Notification.DEFAULT_VIBRATE);
+
+        //System.out.println(System.currentTimeMillis());
+
+
         // Альтернативный вариант
         // NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
 
         //notificationManager.cancel(NOTIFY_ID);
 
-        notificationManager.notify(NOTIFY_ID, builder.build());
+         Handler handler = new Handler();
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                NotificationManager notificationManager =
+                        (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+                notificationManager.notify(NOTIFY_ID, builder.build());
+            }
+        };
+        handler.postDelayed(runnable, 10 * 1000);
+
+
+
     }
 }

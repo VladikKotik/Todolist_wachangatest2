@@ -1,4 +1,4 @@
-package things.test.ru.todolist_wachangatest2;
+package things.test.ru.todolist_wachangatest2.app;
 
 import android.app.Application;
 import android.arch.persistence.room.Room;

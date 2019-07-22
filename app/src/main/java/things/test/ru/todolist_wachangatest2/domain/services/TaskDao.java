@@ -1,4 +1,4 @@
-package things.test.ru.todolist_wachangatest2;
+package things.test.ru.todolist_wachangatest2.domain.services;
 
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
@@ -11,6 +11,7 @@ import java.util.List;
 
 import io.reactivex.Flowable;
 import io.reactivex.Maybe;
+import things.test.ru.todolist_wachangatest2.domain.model.Task;
 
 @Dao
 public interface TaskDao {

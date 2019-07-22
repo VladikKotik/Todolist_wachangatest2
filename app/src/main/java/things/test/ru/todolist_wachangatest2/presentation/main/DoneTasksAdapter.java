@@ -1,7 +1,8 @@
-package things.test.ru.todolist_wachangatest2;
+package things.test.ru.todolist_wachangatest2.presentation.main;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Paint;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,12 +12,16 @@ import android.widget.TextView;
 
 import java.util.List;
 
-public class UnDoneTasksAdapter extends RecyclerView.Adapter<UnDoneTasksAdapter.ViewHolder> {
+import things.test.ru.todolist_wachangatest2.R;
+import things.test.ru.todolist_wachangatest2.domain.model.Task;
+import things.test.ru.todolist_wachangatest2.presentation.edit.EditActivity;
+
+public class DoneTasksAdapter extends RecyclerView.Adapter<DoneTasksAdapter.ViewHolder> {
 
     private List<Task> tasks;
     private Context mContext;
 
-    public UnDoneTasksAdapter(Context context, List<Task> tasks) {
+    public DoneTasksAdapter(Context context, List<Task> tasks) {
         this.tasks = tasks;
         mContext = context;
     }
@@ -31,7 +36,7 @@ public class UnDoneTasksAdapter extends RecyclerView.Adapter<UnDoneTasksAdapter.
     public void onBindViewHolder(ViewHolder holder, int position) {
         Task task = tasks.get(position);
         holder.text.setText(task.text);
-        holder.checkBox.setChecked(false);
+        holder.checkBox.setChecked(true);
 
     }
 
@@ -50,6 +55,7 @@ public class UnDoneTasksAdapter extends RecyclerView.Adapter<UnDoneTasksAdapter.
         public ViewHolder(View itemView) {
             super(itemView);
             text = (TextView) itemView.findViewById(R.id.task_text);
+            text.setPaintFlags(text.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG); //someTextView.
             checkBox=(CheckBox) itemView.findViewById(R.id.task_status);
             itemView.setOnClickListener(this);
             checkBox.setOnClickListener(this);
@@ -59,13 +65,12 @@ public class UnDoneTasksAdapter extends RecyclerView.Adapter<UnDoneTasksAdapter.
         public void onClick(View view) {
             int position = getAdapterPosition();
             if (view.getId() == checkBox.getId()) {
-                //System.out.println("here we go");
                 if (position != RecyclerView.NO_POSITION) {
 
                     Task oneTask = tasks.get(position);
 
-                   // if(checkBox.isChecked()){
-                        oneTask.status=true;
+                    //if(!checkBox.isChecked()){
+                        oneTask.status=false;
                     //}
                     ((MainActivity)mContext).onStatusChanged(oneTask);
                 }

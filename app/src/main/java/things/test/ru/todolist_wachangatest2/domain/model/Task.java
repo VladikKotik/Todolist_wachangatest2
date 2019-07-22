@@ -1,4 +1,4 @@
-package things.test.ru.todolist_wachangatest2;
+package things.test.ru.todolist_wachangatest2.domain.model;
 
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;

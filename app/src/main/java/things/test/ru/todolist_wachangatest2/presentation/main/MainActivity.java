@@ -1,13 +1,10 @@
-package things.test.ru.todolist_wachangatest2;
+package things.test.ru.todolist_wachangatest2.presentation.main;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -15,17 +12,20 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 
-public class MainActivity extends AppCompatActivity implements DatabaseCallback{
+import things.test.ru.todolist_wachangatest2.R;
+import things.test.ru.todolist_wachangatest2.app.App;
+import things.test.ru.todolist_wachangatest2.app.AppDatabase;
+import things.test.ru.todolist_wachangatest2.domain.localStorage.DatabaseCallback;
+import things.test.ru.todolist_wachangatest2.domain.localStorage.DatabaseManager;
+import things.test.ru.todolist_wachangatest2.domain.model.Task;
+import things.test.ru.todolist_wachangatest2.presentation.edit.EditActivity;
+
+public class MainActivity extends AppCompatActivity implements DatabaseCallback {
 
     List<Task> tasks;
     RecyclerView recyclerView;
