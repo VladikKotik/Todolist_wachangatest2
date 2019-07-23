@@ -17,7 +17,6 @@ import things.test.ru.todolist_wachangatest2.app.AppDatabase;
 import things.test.ru.todolist_wachangatest2.domain.model.Task;
 
 public class DatabaseManager {
-    private static final String DB_NAME = "database-name";
     private AppDatabase db;
 
 

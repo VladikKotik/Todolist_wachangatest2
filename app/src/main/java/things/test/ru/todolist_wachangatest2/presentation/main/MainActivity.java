@@ -29,7 +29,7 @@ import things.test.ru.todolist_wachangatest2.presentation.edit.EditActivity;
 public class MainActivity extends AppCompatActivity implements DatabaseCallback {
 
     RecyclerView recyclerView;
-    RecyclerView doneTasks_recyclerView;
+    RecyclerView doneTasksRecyclerView;
     DatabaseManager dbmanager;
     boolean doneShown;
     Button showDoneButton;
@@ -67,9 +67,9 @@ public class MainActivity extends AppCompatActivity implements DatabaseCallback 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-        doneTasks_recyclerView = (RecyclerView) findViewById(R.id.done_tasks_recycle_view);
+        doneTasksRecyclerView = (RecyclerView) findViewById(R.id.done_tasks_recycle_view);
         LinearLayoutManager layoutManager2 = new LinearLayoutManager(this);
-        doneTasks_recyclerView.setLayoutManager(layoutManager2);
+        doneTasksRecyclerView.setLayoutManager(layoutManager2);
 
         showDoneButton=findViewById(R.id.show_done_button);
 
@@ -84,12 +84,12 @@ public class MainActivity extends AppCompatActivity implements DatabaseCallback 
 
     public void showDone(View view) { //or unshow)))
         if(doneShown){
-            doneTasks_recyclerView.setVisibility(View.GONE);
+            doneTasksRecyclerView.setVisibility(View.GONE);
             showDoneButton.setText("Показать выполненные");
             doneShown=false;
         }
         else{
-            doneTasks_recyclerView.setVisibility(View.VISIBLE);
+            doneTasksRecyclerView.setVisibility(View.VISIBLE);
             showDoneButton.setText("Скрыть выполненные");
             doneShown=true;
 
@@ -122,8 +122,8 @@ public class MainActivity extends AppCompatActivity implements DatabaseCallback 
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
         DoneTasksAdapter doneTasksAdapter=new DoneTasksAdapter(this,done_tasks);
-        doneTasks_recyclerView.setAdapter(doneTasksAdapter);
-        doneTasks_recyclerView.setItemAnimator(new DefaultItemAnimator());
+        doneTasksRecyclerView.setAdapter(doneTasksAdapter);
+        doneTasksRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
 
 

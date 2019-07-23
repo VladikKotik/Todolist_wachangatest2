@@ -32,12 +32,12 @@ import things.test.ru.todolist_wachangatest2.domain.model.Task;
 
 public class EditActivity extends AppCompatActivity implements DatabaseCallback {
 
-    Task this_task;
+    Task thisTask;
     DatabaseManager dbmanager;
     AppDatabase db;
-    TextInputEditText text_field;
-    AppCompatImageButton delete_button;
-    ImageButton notif_button;
+    TextInputEditText textField;
+    AppCompatImageButton deleteButton;
+    ImageButton notifButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,9 +47,9 @@ public class EditActivity extends AppCompatActivity implements DatabaseCallback 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_edit);
         setSupportActionBar(toolbar);
 
-       text_field=findViewById(R.id.editText2);
-       delete_button=findViewById(R.id.delete_button);
-       notif_button=findViewById(R.id.notification_button);
+        textField=findViewById(R.id.editText2);
+        deleteButton=findViewById(R.id.delete_button);
+        notifButton=findViewById(R.id.notification_button);
 
 
 
@@ -57,30 +57,30 @@ public class EditActivity extends AppCompatActivity implements DatabaseCallback 
 
         dbmanager= App.getInstance().getDbmanager();
 
-        this_task=getIntent().getParcelableExtra("task");
-        if(this_task==null){
+        thisTask=getIntent().getParcelableExtra("task");
+        if(thisTask==null){
             getSupportActionBar().setTitle("Новая заметка");
             RelativeLayout relativeLayout=findViewById(R.id.relative_with_buttons);
-            relativeLayout.removeView(delete_button);
+            relativeLayout.removeView(deleteButton);
 
         }
         else{
             getSupportActionBar().setTitle("Заметка");
 
-            text_field.setText(this_task.text);
+            textField.setText(thisTask.text);
 
 
 
-            if(this_task.status){
-                notif_button.setVisibility(View.GONE);
+            if(thisTask.status){
+                notifButton.setVisibility(View.GONE);
             }
 
-            if(this_task.notification){
+            if(thisTask.notification){
 
-                notif_button.setImageResource(R.drawable.ic_cross);
+                notifButton.setImageResource(R.drawable.ic_cross);
             }
-            else if(!this_task.notification){
-                notif_button.setImageResource(R.drawable.ic_alarmclock);
+            else if(!thisTask.notification){
+                notifButton.setImageResource(R.drawable.ic_alarmclock);
 
             }
 
@@ -94,9 +94,9 @@ public class EditActivity extends AppCompatActivity implements DatabaseCallback 
 
     public void save_exit(View view) {
 
-        String new_task_text=text_field.getText().toString();
+        String new_task_text=textField.getText().toString();
 
-        if(this_task==null){
+        if(thisTask==null){
             if(new_task_text.length()!=0){
                 dbmanager.addTask(this,new_task_text,false);
                 exit();
@@ -107,8 +107,8 @@ public class EditActivity extends AppCompatActivity implements DatabaseCallback 
         }
         else{
             if(new_task_text.length()!=0){
-                this_task.text=new_task_text;
-                dbmanager.updateTask(this,this_task);
+                thisTask.text=new_task_text;
+                dbmanager.updateTask(this,thisTask);
                 exit();
             }
 
@@ -125,14 +125,14 @@ public class EditActivity extends AppCompatActivity implements DatabaseCallback 
 
     public void delete(View view) {
 
-        dbmanager.deleteTask(this,this_task);
+        dbmanager.deleteTask(this,thisTask);
     }
 
     @Override
     public void onTasksLoaded(List<Task> tasks) {
 
 
-        this_task = tasks.get(tasks.size()-1);
+        thisTask = tasks.get(tasks.size()-1);
 
 
     }
@@ -159,8 +159,8 @@ public class EditActivity extends AppCompatActivity implements DatabaseCallback 
 
     @Override
     public void onLastTaskLoaded(Task task) {
-        this_task=task;
-        settingNotification(this_task);
+        thisTask=task;
+        settingNotification(thisTask);
     }
 
     public void exit(){
@@ -171,9 +171,9 @@ public class EditActivity extends AppCompatActivity implements DatabaseCallback 
 
     public void setNotification(View view) {
 
-        String new_task_text=text_field.getText().toString();
+        String new_task_text=textField.getText().toString();
 
-        if(this_task==null){
+        if(thisTask==null){
             if(new_task_text.length()!=0){
 
                 dbmanager.addTask(this,new_task_text,true);
@@ -186,17 +186,17 @@ public class EditActivity extends AppCompatActivity implements DatabaseCallback 
         }
         else{
             if(new_task_text.length()!=0){
-                this_task.text=new_task_text;
+                thisTask.text=new_task_text;
 
-                if(this_task.notification){
-                    this_task.notification = false;
+                if(thisTask.notification){
+                    thisTask.notification = false;
                 }
                 else {
-                    this_task.notification = true;
+                    thisTask.notification = true;
                 }
-                    dbmanager.updateTask(this, this_task); //можно и убрать, но вдруг на поменялась
+                    dbmanager.updateTask(this, thisTask); //можно и убрать, но вдруг на поменялась
 
-                    settingNotification(this_task);
+                    settingNotification(thisTask);
 
             }
             else{
@@ -215,7 +215,7 @@ public class EditActivity extends AppCompatActivity implements DatabaseCallback 
 
 
 
-        final int NOTIFY_ID = 228+(int)this_task.id;
+        final int NOTIFY_ID = 228+(int)thisTask.id;
 
         String notificationText=notificationObject.text.substring(0,Math.min(notificationObject.text.length(),19));
 
@@ -261,21 +261,21 @@ public class EditActivity extends AppCompatActivity implements DatabaseCallback 
 
 
                     notificationManager.notify(NOTIFY_ID, builder.build());
-                    this_task.notification=false;
-                    dbmanager.updateTask(this_task);
-                    notif_button.setImageResource(R.drawable.ic_alarmclock);
+                    thisTask.notification=false;
+                    dbmanager.updateTask(thisTask);
+                    notifButton.setImageResource(R.drawable.ic_alarmclock);
 
                 }
             };
             handler.postDelayed(runnable, 10 * 60 * 1000);
-            notif_button.setImageResource(R.drawable.ic_cross);
+            notifButton.setImageResource(R.drawable.ic_cross);
 
 
         }
         else if(!notificationObject.notification){
 
             notificationManager.cancel(NOTIFY_ID);
-            notif_button.setImageResource(R.drawable.ic_alarmclock);
+            notifButton.setImageResource(R.drawable.ic_alarmclock);
         }
     }
 }
