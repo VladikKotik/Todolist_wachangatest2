@@ -24,7 +24,7 @@ import things.test.ru.todolist_wachangatest2.domain.localStorage.DatabaseCallbac
 import things.test.ru.todolist_wachangatest2.domain.localStorage.DatabaseManager;
 import things.test.ru.todolist_wachangatest2.domain.model.Task;
 import things.test.ru.todolist_wachangatest2.presentation.edit.EditActivity;
-import things.test.ru.todolist_wachangatest2.presentation.edit.jopahui;
+
 
 public class MainActivity extends AppCompatActivity implements DatabaseCallback {
 
@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity implements DatabaseCallback 
         dbmanager= App.getInstance().getDbmanager();
 
         dbmanager.getTasks(this);
-        dbmanager.getTheLastTask(this);
+       // dbmanager.getTheLastTask(this);
 
         //db.close();
 

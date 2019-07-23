@@ -176,4 +176,28 @@ public class DatabaseManager {
             }
         });
     }
+
+    public void updateTask(final Task task) {
+
+        Completable.fromAction(new Action() {
+            @Override
+            public void run() throws Exception {
+                db.TaskDao().update(task);
+            }
+        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new CompletableObserver() {
+            @Override
+            public void onSubscribe(Disposable d) {
+
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+            }
+        });
+    }
 }

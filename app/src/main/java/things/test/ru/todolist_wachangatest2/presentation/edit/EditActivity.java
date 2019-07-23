@@ -3,6 +3,7 @@ package things.test.ru.todolist_wachangatest2.presentation.edit;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -15,12 +16,14 @@ import android.os.Bundle;
 import android.support.v7.widget.AppCompatImageButton;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 
 import java.util.List;
 
 import io.reactivex.Observable;
 import io.reactivex.schedulers.Schedulers;
+import things.test.ru.todolist_wachangatest2.app.TaskReceiver;
 import things.test.ru.todolist_wachangatest2.presentation.main.MainActivity;
 import things.test.ru.todolist_wachangatest2.R;
 import things.test.ru.todolist_wachangatest2.app.App;
@@ -28,6 +31,8 @@ import things.test.ru.todolist_wachangatest2.app.AppDatabase;
 import things.test.ru.todolist_wachangatest2.domain.localStorage.DatabaseCallback;
 import things.test.ru.todolist_wachangatest2.domain.localStorage.DatabaseManager;
 import things.test.ru.todolist_wachangatest2.domain.model.Task;
+
+import static android.app.PendingIntent.getBroadcast;
 
 public class EditActivity extends AppCompatActivity implements DatabaseCallback {
 
@@ -71,6 +76,10 @@ public class EditActivity extends AppCompatActivity implements DatabaseCallback 
             getSupportActionBar().setTitle("Заметка");
 
             text_field.setText(this_task.text);
+            if(this_task.status){
+                ImageButton notif_button=findViewById(R.id.notification_button);
+                notif_button.setVisibility(View.GONE);
+            }
 
         }
 
@@ -156,8 +165,8 @@ public class EditActivity extends AppCompatActivity implements DatabaseCallback 
     @Override
     public void onLastTaskLoaded(Task task) {
         this_task=task;
-        System.out.println("!!!!!!onLastTaskLoaded!!!!!!!!");
-        System.out.println(task.id+" "+task.text);
+        //System.out.println("!!!!!!onLastTaskLoaded!!!!!!!!");
+        //System.out.println(task.id+" "+task.text);
         settingNotification(this_task);
     }
 
@@ -225,7 +234,17 @@ public class EditActivity extends AppCompatActivity implements DatabaseCallback 
         String notificationText=notificationObject.text.substring(0,Math.min(notificationObject.text.length(),19));
 
 
-        System.out.println(NOTIFY_ID);
+       // System.out.println(NOTIFY_ID);
+
+        Intent getDoneIntent = new Intent(this,TaskReceiver.class);
+        getDoneIntent.putExtra("task", notificationObject);
+        PendingIntent getDonePendingIntent= PendingIntent.
+                getBroadcast(this,228,getDoneIntent,PendingIntent.FLAG_UPDATE_CURRENT);
+
+        NotificationCompat.Action getDoneAction =
+                new NotificationCompat.Action(R.drawable.ic_stat_name,"завершить",getDonePendingIntent);
+
+
 
         Intent notificationIntent = new Intent(this, MainActivity.class);
         PendingIntent contentIntent = PendingIntent.getActivity(this,
@@ -247,7 +266,9 @@ public class EditActivity extends AppCompatActivity implements DatabaseCallback 
                 .setLargeIcon(BitmapFactory.decodeResource(res, R.drawable.ic_stat_name)) // большая
                 // картинка
                 .setWhen(System.currentTimeMillis())
-                .setAutoCancel(true); // автоматически закрыть уведомление после нажатия
+                .setAutoCancel(true)// автоматически закрыть уведомление после нажатия
+                .addAction(getDoneAction);
+
 
         builder.setDefaults(Notification.DEFAULT_VIBRATE);
 
