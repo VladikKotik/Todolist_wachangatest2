@@ -24,6 +24,7 @@ import things.test.ru.todolist_wachangatest2.domain.localStorage.DatabaseCallbac
 import things.test.ru.todolist_wachangatest2.domain.localStorage.DatabaseManager;
 import things.test.ru.todolist_wachangatest2.domain.model.Task;
 import things.test.ru.todolist_wachangatest2.presentation.edit.EditActivity;
+import things.test.ru.todolist_wachangatest2.presentation.edit.jopahui;
 
 public class MainActivity extends AppCompatActivity implements DatabaseCallback {
 
@@ -76,12 +77,23 @@ public class MainActivity extends AppCompatActivity implements DatabaseCallback 
         showDoneButton=findViewById(R.id.show_done_button);
 
 
-        dbmanager = new DatabaseManager(this,db);
+      //  dbmanager = new DatabaseManager(this,db);
+
+        dbmanager= App.getInstance().getDbmanager();
 
         dbmanager.getTasks(this);
-       // db.close();
+        dbmanager.getTheLastTask(this);
+
+        //db.close();
+
+     //   jopahui jh=new jopahui();
+
     }
 
+    public static void getLastTaskFromMA(DatabaseManager dbmanager, DatabaseCallback databaseCallback){
+        dbmanager.getTheLastTask(databaseCallback);
+
+    }
 
     public void showDone(View view) { //or unshow)))
         if(doneShown){
@@ -152,6 +164,7 @@ public class MainActivity extends AppCompatActivity implements DatabaseCallback 
             showDoneButton.setVisibility(View.GONE);
         }
 
+
     }
 
     @Override
@@ -172,6 +185,14 @@ public class MainActivity extends AppCompatActivity implements DatabaseCallback 
     @Override
     public void onTaskUpdated() {
         dbmanager.getTasks(this);
+    }
+
+    @Override
+    public void onLastTaskLoaded(Task task) {
+
+
+        System.out.println("!!!!!!main activityonLastTaskLoaded!!!!!!!!");
+        System.out.println(task.id+" "+task.text);
     }
 
 

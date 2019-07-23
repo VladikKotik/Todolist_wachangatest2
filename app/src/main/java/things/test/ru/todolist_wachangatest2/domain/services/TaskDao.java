@@ -11,6 +11,7 @@ import java.util.List;
 
 import io.reactivex.Flowable;
 import io.reactivex.Maybe;
+import io.reactivex.Single;
 import things.test.ru.todolist_wachangatest2.domain.model.Task;
 
 @Dao
@@ -22,6 +23,9 @@ public interface TaskDao {
 
     @Query("SELECT * FROM task WHERE id = :id")
     Maybe<Task> getById(long id);
+
+    @Query("SELECT * FROM task WHERE id = (SELECT MAX(id) FROM task) LIMIT 1")
+    Single<Task> getLastTask();
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(Task task);

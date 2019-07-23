@@ -15,4 +15,5 @@ public interface DatabaseCallback {
 
         void onTaskUpdated();
 
+        void onLastTaskLoaded(Task task);
 }

@@ -19,6 +19,8 @@ import android.widget.RelativeLayout;
 
 import java.util.List;
 
+import io.reactivex.Observable;
+import io.reactivex.schedulers.Schedulers;
 import things.test.ru.todolist_wachangatest2.presentation.main.MainActivity;
 import things.test.ru.todolist_wachangatest2.R;
 import things.test.ru.todolist_wachangatest2.app.App;
@@ -35,7 +37,7 @@ public class EditActivity extends AppCompatActivity implements DatabaseCallback 
     AppDatabase db;
     TextInputEditText text_field;
     AppCompatImageButton delete_button;
-    private static final int NOTIFY_ID = 228;
+    //private static final int NOTIFY_ID = 228;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +53,9 @@ public class EditActivity extends AppCompatActivity implements DatabaseCallback 
 
 
         db = App.getInstance().getDatabase();
-        dbmanager = new DatabaseManager(this,db);
+        //dbmanager = new DatabaseManager(this,db);
+
+        dbmanager= App.getInstance().getDbmanager();
 
         this_task=getIntent().getParcelableExtra("task");
         //System.out.println("status:  "+this_task.status);
@@ -83,19 +87,23 @@ public class EditActivity extends AppCompatActivity implements DatabaseCallback 
         if(this_task==null){
             if(new_task_text.length()!=0){
                 dbmanager.addTask(this,new_task_text);
+                exit();
             }
             else{
-                exit();
+                //exit();
+                return;
             }
         }
         else{
             if(new_task_text.length()!=0){
                 this_task.text=new_task_text;
                 dbmanager.updateTask(this,this_task);
+                exit();
             }
 
             else{
-                exit();
+                //exit();
+                return;
             }
 
 
@@ -112,6 +120,12 @@ public class EditActivity extends AppCompatActivity implements DatabaseCallback 
     @Override
     public void onTasksLoaded(List<Task> tasks) {
 
+
+        this_task = tasks.get(tasks.size()-1);
+
+        System.out.println("!!!!!!onLastTaskLoaded!!!!!!!!");
+        System.out.println(this_task.id+" "+this_task.text);
+
     }
 
     @Override
@@ -123,7 +137,9 @@ public class EditActivity extends AppCompatActivity implements DatabaseCallback 
     @Override
     public void onTaskAdded() {
 
-        exit();
+
+        //exit();
+        //this_task=
     }
 
     @Override
@@ -134,7 +150,15 @@ public class EditActivity extends AppCompatActivity implements DatabaseCallback 
     @Override
     public void onTaskUpdated() {
 
-        exit();
+        //exit();
+    }
+
+    @Override
+    public void onLastTaskLoaded(Task task) {
+        this_task=task;
+        System.out.println("!!!!!!onLastTaskLoaded!!!!!!!!");
+        System.out.println(task.id+" "+task.text);
+        settingNotification(this_task);
     }
 
     public void exit(){
@@ -146,6 +170,8 @@ public class EditActivity extends AppCompatActivity implements DatabaseCallback 
 
     public void setNotification(View view) {
 
+        //таск и таск ид иметь бы здесь!!
+
         String new_task_text=text_field.getText().toString();
         String notificationText = new String();
 
@@ -155,10 +181,14 @@ public class EditActivity extends AppCompatActivity implements DatabaseCallback 
 
         if(this_task==null){
             if(new_task_text.length()!=0){
-                notificationText=new_task_text.substring(0,Math.min(new_task_text.length(),19));
+               // notificationText=new_task_text.substring(0,Math.min(new_task_text.length(),19));
 
                 dbmanager.addTask(this,new_task_text);
 
+                dbmanager.getTheLastTask(this);
+
+
+                // dbmanager.getTasks(this);
                 //System.out.println(notificationText);
             }
             else{
@@ -167,15 +197,35 @@ public class EditActivity extends AppCompatActivity implements DatabaseCallback 
         }
         else{
             if(new_task_text.length()!=0){
-                notificationText=new_task_text.substring(0,Math.min(new_task_text.length(),19));
+             //   notificationText=new_task_text.substring(0,Math.min(new_task_text.length(),19));
                 this_task.text=new_task_text;
-                dbmanager.updateTask(this,this_task);
+                dbmanager.updateTask(this,this_task); //можно и убрать, но вдруг на поменялась
+                //dbmanager.getTheLastTask(this);
+
+                settingNotification(this_task);
+
+               // MainActivity.getLastTaskFromMA(dbmanager, this);
 
             }
             else{
                 return;
             }
         }
+
+        //
+
+
+
+
+    }
+
+    public void settingNotification(Task notificationObject){
+        final int NOTIFY_ID = 228+(int)this_task.id;
+
+        String notificationText=notificationObject.text.substring(0,Math.min(notificationObject.text.length(),19));
+
+
+        System.out.println(NOTIFY_ID);
 
         Intent notificationIntent = new Intent(this, MainActivity.class);
         PendingIntent contentIntent = PendingIntent.getActivity(this,
@@ -209,7 +259,7 @@ public class EditActivity extends AppCompatActivity implements DatabaseCallback 
 
         //notificationManager.cancel(NOTIFY_ID);
 
-         Handler handler = new Handler();
+        Handler handler = new Handler();
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
@@ -219,8 +269,6 @@ public class EditActivity extends AppCompatActivity implements DatabaseCallback 
             }
         };
         handler.postDelayed(runnable, 10 * 1000);
-
-
 
     }
 }
