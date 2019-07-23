@@ -69,9 +69,8 @@ public class DoneTasksAdapter extends RecyclerView.Adapter<DoneTasksAdapter.View
 
                     Task oneTask = tasks.get(position);
 
-                    //if(!checkBox.isChecked()){
                         oneTask.status=false;
-                    //}
+
                     ((MainActivity)mContext).onStatusChanged(oneTask);
                 }
             }
@@ -79,9 +78,7 @@ public class DoneTasksAdapter extends RecyclerView.Adapter<DoneTasksAdapter.View
                 if (position != RecyclerView.NO_POSITION) {
 
                     Task oneTask = tasks.get(position);
-                    System.out.println("!!!! adapter!!! " + oneTask.status);
                     Intent intent = new Intent(mContext, EditActivity.class);
-//                intent.putExtra("task_ID", (int)oneTask.id);
                     intent.putExtra("task", oneTask);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     mContext.startActivity(intent); //все активити над прописывать в манифесте!!

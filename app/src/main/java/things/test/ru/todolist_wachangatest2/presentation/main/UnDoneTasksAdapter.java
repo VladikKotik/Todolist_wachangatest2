@@ -63,14 +63,11 @@ public class UnDoneTasksAdapter extends RecyclerView.Adapter<UnDoneTasksAdapter.
         public void onClick(View view) {
             int position = getAdapterPosition();
             if (view.getId() == checkBox.getId()) {
-                //System.out.println("here we go");
                 if (position != RecyclerView.NO_POSITION) {
 
                     Task oneTask = tasks.get(position);
 
-                   // if(checkBox.isChecked()){
                         oneTask.status=true;
-                    //}
                     ((MainActivity)mContext).onStatusChanged(oneTask);
                 }
             }
@@ -78,9 +75,7 @@ public class UnDoneTasksAdapter extends RecyclerView.Adapter<UnDoneTasksAdapter.
                 if (position != RecyclerView.NO_POSITION) {
 
                     Task oneTask = tasks.get(position);
-                    System.out.println("!!!! adapter!!! " + oneTask.status);
-                    Intent intent = new Intent(mContext, EditActivity.class);
-//                intent.putExtra("task_ID", (int)oneTask.id);
+                   Intent intent = new Intent(mContext, EditActivity.class);
                     intent.putExtra("task", oneTask);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     mContext.startActivity(intent); //все активити над прописывать в манифесте!!

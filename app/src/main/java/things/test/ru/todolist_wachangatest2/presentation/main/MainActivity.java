@@ -28,7 +28,6 @@ import things.test.ru.todolist_wachangatest2.presentation.edit.EditActivity;
 
 public class MainActivity extends AppCompatActivity implements DatabaseCallback {
 
-    List<Task> tasks;
     RecyclerView recyclerView;
     RecyclerView doneTasks_recyclerView;
     DatabaseManager dbmanager;
@@ -38,7 +37,6 @@ public class MainActivity extends AppCompatActivity implements DatabaseCallback 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        //boolean isReady = false;
 
         doneShown=true;
 
@@ -56,7 +54,6 @@ public class MainActivity extends AppCompatActivity implements DatabaseCallback 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Snackbar.make(view, "тут переход", Snackbar.LENGTH_LONG).show();
                 Intent intent = new Intent(this_context, EditActivity.class);
                 intent.putExtra("task_ID", -1);
 //                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -77,23 +74,13 @@ public class MainActivity extends AppCompatActivity implements DatabaseCallback 
         showDoneButton=findViewById(R.id.show_done_button);
 
 
-      //  dbmanager = new DatabaseManager(this,db);
 
         dbmanager= App.getInstance().getDbmanager();
 
         dbmanager.getTasks(this);
-       // dbmanager.getTheLastTask(this);
-
-        //db.close();
-
-     //   jopahui jh=new jopahui();
 
     }
 
-    public static void getLastTaskFromMA(DatabaseManager dbmanager, DatabaseCallback databaseCallback){
-        dbmanager.getTheLastTask(databaseCallback);
-
-    }
 
     public void showDone(View view) { //or unshow)))
         if(doneShown){
@@ -117,11 +104,6 @@ public class MainActivity extends AppCompatActivity implements DatabaseCallback 
 
     @Override
     public void onTasksLoaded(List<Task> tasks) {
-
-
-//        Task task1=new Task("s");
-//        List<Task> done_tasks = null;
-//        done_tasks.add(task1);
 
         ArrayList<Task> done_tasks=new ArrayList<Task>();
         ArrayList<Task> undone_tasks=new ArrayList<Task>();
@@ -149,10 +131,6 @@ public class MainActivity extends AppCompatActivity implements DatabaseCallback 
 
 
         if(progressBar!=null) {
-           // LinearLayout linearLayout = (LinearLayout) findViewById(R.id.linear_main);
-            //RelativeLayout relativeLayout=findViewById(R.id.linear_main);
-            //linearLayout.removeView(progressBar);
-            //relativeLayout.removeView(progressBar);
 
             CoordinatorLayout coordinatorLayout=(CoordinatorLayout)findViewById(R.id.main_coordintator);
             coordinatorLayout.removeView(progressBar);
@@ -190,9 +168,6 @@ public class MainActivity extends AppCompatActivity implements DatabaseCallback 
     @Override
     public void onLastTaskLoaded(Task task) {
 
-
-        System.out.println("!!!!!!main activityonLastTaskLoaded!!!!!!!!");
-        System.out.println(task.id+" "+task.text);
     }
 
 

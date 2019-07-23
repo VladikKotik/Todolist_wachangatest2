@@ -18,7 +18,6 @@ public class App extends Application {
         super.onCreate();
         instance = this;
         database = Room.databaseBuilder(this, AppDatabase.class, "database")
-                //.allowMainThreadQueries() //так низя, переделать!!! в другой поток
                 .build();
         dbmanager= new DatabaseManager(database);
     }

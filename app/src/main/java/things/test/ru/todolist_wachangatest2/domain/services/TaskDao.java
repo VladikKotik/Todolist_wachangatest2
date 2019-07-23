@@ -18,7 +18,6 @@ import things.test.ru.todolist_wachangatest2.domain.model.Task;
 public interface TaskDao {
     @Query("SELECT * FROM task")
     Flowable<List<Task>> getAll();
- //   List<Task> getAll();
 
 
     @Query("SELECT * FROM task WHERE id = :id")
