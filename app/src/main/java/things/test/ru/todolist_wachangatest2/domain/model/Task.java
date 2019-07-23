@@ -15,15 +15,20 @@ public class Task implements Parcelable {
 
     public boolean status;
 
+    public boolean notification;
+
     public Task(String text){
         this.text=text;
         status=false;
+        notification=false;
     }
 
     protected Task(Parcel in) {
         id = in.readLong();
         text = in.readString();
         status = in.readByte() != 0;
+        notification = in.readByte() != 0;
+
     }
 
     public static final Creator<Task> CREATOR = new Creator<Task>() {
@@ -49,5 +54,7 @@ public class Task implements Parcelable {
         parcel.writeLong(id);
         parcel.writeString(text);
         parcel.writeByte((byte) (status ? 1 : 0));
+        parcel.writeByte((byte) (notification ? 1 : 0));
+
     }
 }

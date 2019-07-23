@@ -42,6 +42,7 @@ public class EditActivity extends AppCompatActivity implements DatabaseCallback 
     AppDatabase db;
     TextInputEditText text_field;
     AppCompatImageButton delete_button;
+    ImageButton notif_button;
     //private static final int NOTIFY_ID = 228;
 
     @Override
@@ -54,6 +55,7 @@ public class EditActivity extends AppCompatActivity implements DatabaseCallback 
 
        text_field=findViewById(R.id.editText2);
        delete_button=findViewById(R.id.delete_button);
+       notif_button=findViewById(R.id.notification_button);
 
 
 
@@ -76,10 +78,22 @@ public class EditActivity extends AppCompatActivity implements DatabaseCallback 
             getSupportActionBar().setTitle("Заметка");
 
             text_field.setText(this_task.text);
+
+
+
             if(this_task.status){
-                ImageButton notif_button=findViewById(R.id.notification_button);
                 notif_button.setVisibility(View.GONE);
             }
+
+            if(this_task.notification){
+
+                notif_button.setImageResource(R.drawable.ic_cross);
+            }
+            else if(!this_task.notification){
+                notif_button.setImageResource(R.drawable.ic_alarmclock);
+
+            }
+
 
         }
 
@@ -95,7 +109,7 @@ public class EditActivity extends AppCompatActivity implements DatabaseCallback 
 
         if(this_task==null){
             if(new_task_text.length()!=0){
-                dbmanager.addTask(this,new_task_text);
+                dbmanager.addTask(this,new_task_text,false);
                 exit();
             }
             else{
@@ -182,9 +196,9 @@ public class EditActivity extends AppCompatActivity implements DatabaseCallback 
         //таск и таск ид иметь бы здесь!!
 
         String new_task_text=text_field.getText().toString();
-        String notificationText = new String();
+//        String notificationText = new String();
 
-        boolean isSet;
+        //boolean isSet;
 
         //System.out.println(new_task_text);
 
@@ -192,7 +206,7 @@ public class EditActivity extends AppCompatActivity implements DatabaseCallback 
             if(new_task_text.length()!=0){
                // notificationText=new_task_text.substring(0,Math.min(new_task_text.length(),19));
 
-                dbmanager.addTask(this,new_task_text);
+                dbmanager.addTask(this,new_task_text,true);
 
                 dbmanager.getTheLastTask(this);
 
@@ -208,12 +222,16 @@ public class EditActivity extends AppCompatActivity implements DatabaseCallback 
             if(new_task_text.length()!=0){
              //   notificationText=new_task_text.substring(0,Math.min(new_task_text.length(),19));
                 this_task.text=new_task_text;
-                dbmanager.updateTask(this,this_task); //можно и убрать, но вдруг на поменялась
-                //dbmanager.getTheLastTask(this);
 
-                settingNotification(this_task);
+                if(this_task.notification){
+                    this_task.notification = false;
+                }
+                else {
+                    this_task.notification = true;
+                }
+                    dbmanager.updateTask(this, this_task); //можно и убрать, но вдруг на поменялась
 
-               // MainActivity.getLastTaskFromMA(dbmanager, this);
+                    settingNotification(this_task);
 
             }
             else{
@@ -228,7 +246,10 @@ public class EditActivity extends AppCompatActivity implements DatabaseCallback 
 
     }
 
-    public void settingNotification(Task notificationObject){
+    public void settingNotification(final Task notificationObject){
+
+
+
         final int NOTIFY_ID = 228+(int)this_task.id;
 
         String notificationText=notificationObject.text.substring(0,Math.min(notificationObject.text.length(),19));
@@ -280,16 +301,30 @@ public class EditActivity extends AppCompatActivity implements DatabaseCallback 
 
         //notificationManager.cancel(NOTIFY_ID);
 
-        Handler handler = new Handler();
-        Runnable runnable = new Runnable() {
-            @Override
-            public void run() {
-                NotificationManager notificationManager =
-                        (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-                notificationManager.notify(NOTIFY_ID, builder.build());
-            }
-        };
-        handler.postDelayed(runnable, 10 * 1000);
+        final NotificationManager notificationManager =
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
+        if(notificationObject.notification) {
+            Handler handler = new Handler();
+            Runnable runnable = new Runnable() {
+                @Override
+                public void run() {
+
+
+                    notificationManager.notify(NOTIFY_ID, builder.build());
+                }
+            };  //пока это вот всё, ему ваще до пизды, не достучишься
+            handler.postDelayed(runnable, 10 * 1000);    //на 1 минуту поставил, а то 10  много  10 * 60 *1000
+            notif_button.setImageResource(R.drawable.ic_cross);
+
+            System.out.println("NOTIFY_ID "+NOTIFY_ID);
+
+        }
+        else if(!notificationObject.notification){
+
+            notificationManager.cancel(NOTIFY_ID);
+            System.out.println("!!!!cancelled!!!  NOTIFY_ID"+NOTIFY_ID);
+            notif_button.setImageResource(R.drawable.ic_alarmclock);
+        }
     }
 }

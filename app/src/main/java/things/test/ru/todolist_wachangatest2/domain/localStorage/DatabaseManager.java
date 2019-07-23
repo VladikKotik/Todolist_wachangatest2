@@ -100,11 +100,12 @@ public class DatabaseManager {
         });
     }
 
-    public void addTask(final DatabaseCallback databaseCallback, final String ltext) {
+    public void addTask(final DatabaseCallback databaseCallback, final String ltext,final boolean notification) {
         Completable.fromAction(new Action() {
             @Override
             public void run() throws Exception {
                 Task task = new Task(ltext);
+                task.notification=notification;
                 db.TaskDao().insert(task);
             }
         }).observeOn(AndroidSchedulers.mainThread())

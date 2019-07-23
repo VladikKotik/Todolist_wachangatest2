@@ -19,7 +19,8 @@
                                   <option name="values">
                                     <map>
                                       <entry key="assetType" value="IMAGE" />
-                                      <entry key="imageAsset" value="C:\Users\1\Desktop\task_icon.png" />
+                                      <entry key="imageAsset" value="C:\Users\1\Desktop\Alarm-Clock-512.png" />
+                                      <entry key="outputName" value="ic_alarmclock" />
                                     </map>
                                   </option>
                                 </PersistentState>
