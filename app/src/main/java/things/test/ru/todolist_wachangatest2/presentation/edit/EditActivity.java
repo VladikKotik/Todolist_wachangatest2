@@ -38,6 +38,25 @@ public class EditActivity extends AppCompatActivity implements DatabaseCallback 
     TextInputEditText textField;
     AppCompatImageButton deleteButton;
     ImageButton notifButton;
+    Handler handler = new Handler();
+    int NOTIFY_ID;
+    NotificationManager notificationManager;
+    NotificationCompat.Builder builder;
+
+    Runnable runnable = new Runnable() {
+        @Override
+        public void run() {
+
+
+
+            notificationManager.notify(NOTIFY_ID, builder.build());
+            thisTask.notification=false;
+            dbmanager.updateTask(thisTask);
+            notifButton.setImageResource(R.drawable.ic_alarmclock);
+            //handler.postDelayed(this, 10 * 1000); //10 * 60 * 1000
+
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -214,8 +233,9 @@ public class EditActivity extends AppCompatActivity implements DatabaseCallback 
     public void settingNotification(final Task notificationObject){
 
 
+       // boolean cancelled=false;
 
-        final int NOTIFY_ID = 228+(int)thisTask.id;
+       NOTIFY_ID = 228+(int)thisTask.id;
 
         String notificationText=notificationObject.text.substring(0,Math.min(notificationObject.text.length(),19));
 
@@ -237,7 +257,7 @@ public class EditActivity extends AppCompatActivity implements DatabaseCallback 
 
         Resources res = this.getResources();
 
-        final NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
+         /*NotificationCompat.Builder*/ builder = new NotificationCompat.Builder(this);
 
         builder.setContentIntent(contentIntent)
                 .setSmallIcon(R.drawable.ic_stat_name)
@@ -250,32 +270,45 @@ public class EditActivity extends AppCompatActivity implements DatabaseCallback 
 
         builder.setDefaults(Notification.DEFAULT_VIBRATE);
 
-        final NotificationManager notificationManager =
+         /*NotificationManager*/ notificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-        if(notificationObject.notification) {
-            Handler handler = new Handler();
-            Runnable runnable = new Runnable() {
-                @Override
-                public void run() {
 
+//        final Handler handler = new Handler();
+//            Runnable runnable = new Runnable() {
+//                @Override
+//                public void run() {
+//
+//
+//
+//                    notificationManager.notify(NOTIFY_ID, builder.build());
+//                    thisTask.notification=false;
+//                    dbmanager.updateTask(thisTask);
+//                    notifButton.setImageResource(R.drawable.ic_alarmclock);
+//                    //handler.postDelayed(this, 10 * 1000); //10 * 60 * 1000
+//
+//                }
+//            };
+//
 
-                    notificationManager.notify(NOTIFY_ID, builder.build());
-                    thisTask.notification=false;
-                    dbmanager.updateTask(thisTask);
-                    notifButton.setImageResource(R.drawable.ic_alarmclock);
-
-                }
-            };
-            handler.postDelayed(runnable, 10 * 60 * 1000);
-            notifButton.setImageResource(R.drawable.ic_cross);
-
+            if(notificationObject.notification) {
+           // if (!cancelled) {
+                handler.postDelayed(runnable, 10 * 1000); //10 * 60 * 1000
+                //runnable.run();
+                notifButton.setImageResource(R.drawable.ic_cross);
+            //}
+            System.out.println("set");
 
         }
         else if(!notificationObject.notification){
+            System.out.println("cancelled");
 
+            handler.removeCallbacks(runnable);
+
+           // cancelled=true;
             notificationManager.cancel(NOTIFY_ID);
             notifButton.setImageResource(R.drawable.ic_alarmclock);
         }
     }
+
 }
