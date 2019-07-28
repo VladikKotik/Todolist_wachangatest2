@@ -12,6 +12,7 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
 
+import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
 import things.test.ru.todolist_wachangatest2.app.AppDatabase;
 import things.test.ru.todolist_wachangatest2.domain.model.Task;
@@ -37,16 +38,18 @@ public class DatabaseManager {
     }
 
     public void getTheLastTask(final DatabaseCallback databaseCallback){ //это, конечно, неоч правильно, НО
-        db.TaskDao().getAll().subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer<List<Task>>() {
-            @Override
-            public void accept(@io.reactivex.annotations.NonNull List<Task> tasks) throws Exception {
+        db.TaskDao().getLastTask().subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread()).subscribe(new DisposableSingleObserver<Task>() {
+           @Override
+           public void onSuccess(Task task) {
+               databaseCallback.onLastTaskLoaded(task);
+           }
 
-                Task lastTask = tasks.get(tasks.size()-1);
-                databaseCallback.onLastTaskLoaded(lastTask);
+           @Override
+           public void onError(Throwable e) {
 
-            }
-        });
+           }
+       });
     }
 
     public void addTask(final DatabaseCallback databaseCallback, final String ltext,final boolean notification) {

@@ -17,6 +17,7 @@ public class TaskReceiver extends BroadcastReceiver {
         NotificationManagerCompat.from(context).cancel((int)task.id+228);
 
         task.status=true;
+        task.notification=false;
         DatabaseManager dbmanager=App.getInstance().getDbmanager();
         dbmanager.updateTask(task);
 

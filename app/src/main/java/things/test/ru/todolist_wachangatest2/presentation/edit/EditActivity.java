@@ -53,7 +53,6 @@ public class EditActivity extends AppCompatActivity implements DatabaseCallback 
             thisTask.notification=false;
             dbmanager.updateTask(thisTask);
             notifButton.setImageResource(R.drawable.ic_alarmclock);
-            //handler.postDelayed(this, 10 * 1000); //10 * 60 * 1000
 
         }
     };
@@ -151,9 +150,6 @@ public class EditActivity extends AppCompatActivity implements DatabaseCallback 
     public void onTasksLoaded(List<Task> tasks) {
 
 
-        thisTask = tasks.get(tasks.size()-1);
-
-
     }
 
     @Override
@@ -165,7 +161,7 @@ public class EditActivity extends AppCompatActivity implements DatabaseCallback 
     @Override
     public void onTaskAdded() {
 
-}
+    }
 
     @Override
     public void onDataNotAvailable() {
@@ -179,7 +175,7 @@ public class EditActivity extends AppCompatActivity implements DatabaseCallback 
     @Override
     public void onLastTaskLoaded(Task task) {
         thisTask=task;
-        settingNotification(thisTask);
+        settingNotification();
     }
 
     public void exit(){
@@ -213,9 +209,9 @@ public class EditActivity extends AppCompatActivity implements DatabaseCallback 
                 else {
                     thisTask.notification = true;
                 }
-                    dbmanager.updateTask(this, thisTask); //можно и убрать, но вдруг на поменялась
+                dbmanager.updateTask(this, thisTask);
 
-                    settingNotification(thisTask);
+                settingNotification();
 
             }
             else{
@@ -223,25 +219,19 @@ public class EditActivity extends AppCompatActivity implements DatabaseCallback 
             }
         }
 
-        //
-
-
-
-
     }
 
-    public void settingNotification(final Task notificationObject){
+    public void settingNotification(){
 
 
-       // boolean cancelled=false;
 
-       NOTIFY_ID = 228+(int)thisTask.id;
+        NOTIFY_ID = 228+(int)thisTask.id;
 
-        String notificationText=notificationObject.text.substring(0,Math.min(notificationObject.text.length(),19));
+        String notificationText=thisTask.text.substring(0,Math.min(thisTask.text.length(),19));
 
 
         Intent getDoneIntent = new Intent(this,TaskReceiver.class);
-        getDoneIntent.putExtra("task", notificationObject);
+        getDoneIntent.putExtra("task", thisTask);
         PendingIntent getDonePendingIntent= PendingIntent.
                 getBroadcast(this,228,getDoneIntent,PendingIntent.FLAG_UPDATE_CURRENT);
 
@@ -257,7 +247,7 @@ public class EditActivity extends AppCompatActivity implements DatabaseCallback 
 
         Resources res = this.getResources();
 
-         /*NotificationCompat.Builder*/ builder = new NotificationCompat.Builder(this);
+        builder = new NotificationCompat.Builder(this);
 
         builder.setContentIntent(contentIntent)
                 .setSmallIcon(R.drawable.ic_stat_name)
@@ -270,42 +260,18 @@ public class EditActivity extends AppCompatActivity implements DatabaseCallback 
 
         builder.setDefaults(Notification.DEFAULT_VIBRATE);
 
-         /*NotificationManager*/ notificationManager =
-                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+         notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
 
-//        final Handler handler = new Handler();
-//            Runnable runnable = new Runnable() {
-//                @Override
-//                public void run() {
-//
-//
-//
-//                    notificationManager.notify(NOTIFY_ID, builder.build());
-//                    thisTask.notification=false;
-//                    dbmanager.updateTask(thisTask);
-//                    notifButton.setImageResource(R.drawable.ic_alarmclock);
-//                    //handler.postDelayed(this, 10 * 1000); //10 * 60 * 1000
-//
-//                }
-//            };
-//
-
-            if(notificationObject.notification) {
-           // if (!cancelled) {
-                handler.postDelayed(runnable, 10 * 1000); //10 * 60 * 1000
-                //runnable.run();
-                notifButton.setImageResource(R.drawable.ic_cross);
-            //}
-            System.out.println("set");
+        if(thisTask.notification) {
+            handler.postDelayed(runnable, 10 * 60 *1000); //10 * 60 * 1000
+            notifButton.setImageResource(R.drawable.ic_cross);
 
         }
-        else if(!notificationObject.notification){
-            System.out.println("cancelled");
+        else if(!thisTask.notification){
 
             handler.removeCallbacks(runnable);
 
-           // cancelled=true;
             notificationManager.cancel(NOTIFY_ID);
             notifButton.setImageResource(R.drawable.ic_alarmclock);
         }

@@ -2,6 +2,7 @@ package things.test.ru.todolist_wachangatest2.app;
 
 import android.app.Application;
 import android.arch.persistence.room.Room;
+import android.os.Handler;
 
 import things.test.ru.todolist_wachangatest2.domain.localStorage.DatabaseManager;
 
@@ -12,6 +13,7 @@ public class App extends Application {
     private AppDatabase database;
 
     private DatabaseManager dbmanager;
+    Handler handler = new Handler();
 
     @Override
     public void onCreate() {
@@ -33,4 +35,6 @@ public class App extends Application {
     public DatabaseManager getDbmanager() {
         return dbmanager;
     }
+
+    public Handler getHandler(){return handler;}
 }
