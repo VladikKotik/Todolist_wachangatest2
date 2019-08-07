@@ -9,9 +9,7 @@ import things.test.ru.todolist_wachangatest2.domain.localStorage.DatabaseManager
 public class App extends Application {
 
     public static App instance;
-
     private AppDatabase database;
-
     private DatabaseManager dbmanager;
     Handler handler = new Handler();
 
@@ -21,7 +19,7 @@ public class App extends Application {
         instance = this;
         database = Room.databaseBuilder(this, AppDatabase.class, "database")
                 .build();
-        dbmanager= new DatabaseManager(database);
+        dbmanager = new DatabaseManager(database);
     }
 
     public static App getInstance() {
@@ -36,5 +34,7 @@ public class App extends Application {
         return dbmanager;
     }
 
-    public Handler getHandler(){return handler;}
+    public Handler getHandler() {
+        return handler;
+    }
 }

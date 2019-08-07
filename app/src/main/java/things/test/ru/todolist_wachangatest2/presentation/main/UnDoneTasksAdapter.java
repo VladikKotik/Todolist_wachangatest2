@@ -36,7 +36,6 @@ public class UnDoneTasksAdapter extends RecyclerView.Adapter<UnDoneTasksAdapter.
         Task task = tasks.get(position);
         holder.text.setText(task.text);
         holder.checkBox.setChecked(false);
-
     }
 
     @Override
@@ -54,7 +53,7 @@ public class UnDoneTasksAdapter extends RecyclerView.Adapter<UnDoneTasksAdapter.
         public ViewHolder(View itemView) {
             super(itemView);
             text = (TextView) itemView.findViewById(R.id.task_text);
-            checkBox=(CheckBox) itemView.findViewById(R.id.task_status);
+            checkBox = (CheckBox) itemView.findViewById(R.id.task_status);
             itemView.setOnClickListener(this);
             checkBox.setOnClickListener(this);
         }
@@ -64,18 +63,14 @@ public class UnDoneTasksAdapter extends RecyclerView.Adapter<UnDoneTasksAdapter.
             int position = getAdapterPosition();
             if (view.getId() == checkBox.getId()) {
                 if (position != RecyclerView.NO_POSITION) {
-
                     Task oneTask = tasks.get(position);
-
-                        oneTask.status=true;
-                    ((MainActivity)mContext).onStatusChanged(oneTask);
+                    oneTask.status = true;
+                    ((MainActivity) mContext).onStatusChanged(oneTask);
                 }
-            }
-            else {
+            } else {
                 if (position != RecyclerView.NO_POSITION) {
-
                     Task oneTask = tasks.get(position);
-                   Intent intent = new Intent(mContext, EditActivity.class);
+                    Intent intent = new Intent(mContext, EditActivity.class);
                     intent.putExtra("task", oneTask);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     mContext.startActivity(intent); //все активити над прописывать в манифесте!!

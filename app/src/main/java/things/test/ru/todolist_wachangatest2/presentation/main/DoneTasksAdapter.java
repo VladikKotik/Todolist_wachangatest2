@@ -37,7 +37,6 @@ public class DoneTasksAdapter extends RecyclerView.Adapter<DoneTasksAdapter.View
         Task task = tasks.get(position);
         holder.text.setText(task.text);
         holder.checkBox.setChecked(true);
-
     }
 
     @Override
@@ -56,7 +55,7 @@ public class DoneTasksAdapter extends RecyclerView.Adapter<DoneTasksAdapter.View
             super(itemView);
             text = (TextView) itemView.findViewById(R.id.task_text);
             text.setPaintFlags(text.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG); //someTextView.
-            checkBox=(CheckBox) itemView.findViewById(R.id.task_status);
+            checkBox = (CheckBox) itemView.findViewById(R.id.task_status);
             itemView.setOnClickListener(this);
             checkBox.setOnClickListener(this);
         }
@@ -66,17 +65,12 @@ public class DoneTasksAdapter extends RecyclerView.Adapter<DoneTasksAdapter.View
             int position = getAdapterPosition();
             if (view.getId() == checkBox.getId()) {
                 if (position != RecyclerView.NO_POSITION) {
-
                     Task oneTask = tasks.get(position);
-
-                        oneTask.status=false;
-
-                    ((MainActivity)mContext).onStatusChanged(oneTask);
+                    oneTask.status = false;
+                    ((MainActivity) mContext).onStatusChanged(oneTask);
                 }
-            }
-            else {
+            } else {
                 if (position != RecyclerView.NO_POSITION) {
-
                     Task oneTask = tasks.get(position);
                     Intent intent = new Intent(mContext, EditActivity.class);
                     intent.putExtra("task", oneTask);

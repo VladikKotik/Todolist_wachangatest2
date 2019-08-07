@@ -9,5 +9,4 @@ import things.test.ru.todolist_wachangatest2.domain.services.TaskDao;
 @Database(entities = {Task.class},version = 1)
 public abstract class AppDatabase extends RoomDatabase {
     public abstract TaskDao TaskDao();
-
 }

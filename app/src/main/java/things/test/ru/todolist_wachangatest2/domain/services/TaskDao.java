@@ -19,7 +19,6 @@ public interface TaskDao {
     @Query("SELECT * FROM task")
     Flowable<List<Task>> getAll();
 
-
     @Query("SELECT * FROM task WHERE id = :id")
     Maybe<Task> getById(long id);
 

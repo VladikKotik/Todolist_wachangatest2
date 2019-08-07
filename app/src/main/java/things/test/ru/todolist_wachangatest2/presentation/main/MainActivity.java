@@ -36,20 +36,13 @@ public class MainActivity extends AppCompatActivity implements DatabaseCallback 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-
-        doneShown=true;
-
+        doneShown = true;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_main);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Заметки, заметочки");
-
-
-        final Context this_context=this;
-
-
+        final Context this_context = this;
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,104 +53,75 @@ public class MainActivity extends AppCompatActivity implements DatabaseCallback 
                 this_context.startActivity(intent);
             }
         });
-
         AppDatabase db = App.getInstance().getDatabase();
-
         recyclerView = (RecyclerView) findViewById(R.id.tasks_recycle_view);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
-
         doneTasksRecyclerView = (RecyclerView) findViewById(R.id.done_tasks_recycle_view);
         LinearLayoutManager layoutManager2 = new LinearLayoutManager(this);
         doneTasksRecyclerView.setLayoutManager(layoutManager2);
-
-        showDoneButton=findViewById(R.id.show_done_button);
-
-
-
-        dbmanager= App.getInstance().getDbmanager();
-
+        showDoneButton = findViewById(R.id.show_done_button);
+        dbmanager = App.getInstance().getDbmanager();
         dbmanager.getTasks(this);
-
     }
 
 
     public void showDone(View view) { //or unshow)))
-        if(doneShown){
+        if (doneShown) {
             doneTasksRecyclerView.setVisibility(View.GONE);
             showDoneButton.setText("Показать выполненные");
-            doneShown=false;
-        }
-        else{
+            doneShown = false;
+        } else {
             doneTasksRecyclerView.setVisibility(View.VISIBLE);
             showDoneButton.setText("Скрыть выполненные");
-            doneShown=true;
-
-        }
+            doneShown = true;
+            }
     }
 
-    public void onStatusChanged(Task task){
-
-        dbmanager.updateTask(this,task);
+    public void onStatusChanged(Task task) {
+        dbmanager.updateTask(this, task);
         dbmanager.getTasks(this);
     }
 
     @Override
     public void onTasksLoaded(List<Task> tasks) {
-
-        ArrayList<Task> done_tasks=new ArrayList<Task>();
-        ArrayList<Task> undone_tasks=new ArrayList<Task>();
-
-        for(Task oneTask:tasks){
-            if(oneTask.status){
+        ArrayList<Task> done_tasks = new ArrayList<Task>();
+        ArrayList<Task> undone_tasks = new ArrayList<Task>();
+        for (Task oneTask : tasks) {
+            if (oneTask.status) {
                 done_tasks.add(oneTask);
-            }
-            else{
+            } else {
                 undone_tasks.add(oneTask);
             }
         }
-
         UnDoneTasksAdapter adapter = new UnDoneTasksAdapter(this, undone_tasks);
         recyclerView.setAdapter(adapter);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-
-        DoneTasksAdapter doneTasksAdapter=new DoneTasksAdapter(this,done_tasks);
+        DoneTasksAdapter doneTasksAdapter = new DoneTasksAdapter(this, done_tasks);
         doneTasksRecyclerView.setAdapter(doneTasksAdapter);
         doneTasksRecyclerView.setItemAnimator(new DefaultItemAnimator());
-
-
-
         ProgressBar progressBar = (ProgressBar) findViewById(R.id.progressBar);
-
-
-        if(progressBar!=null) {
-
-            CoordinatorLayout coordinatorLayout=(CoordinatorLayout)findViewById(R.id.main_coordintator);
+        if (progressBar != null) {
+            CoordinatorLayout coordinatorLayout = (CoordinatorLayout) findViewById(R.id.main_coordintator);
             coordinatorLayout.removeView(progressBar);
         }
-        if(done_tasks.size()!=0){
+        if (done_tasks.size() != 0) {
             showDoneButton.setVisibility(View.VISIBLE);
-        }
-        else{
+        } else {
             showDoneButton.setVisibility(View.GONE);
         }
-
-
     }
 
     @Override
     public void onTaskDeleted() {
-
     }
 
     @Override
     public void onTaskAdded() {
-
     }
 
     @Override
     public void onDataNotAvailable() {
-
     }
 
     @Override
@@ -167,8 +131,5 @@ public class MainActivity extends AppCompatActivity implements DatabaseCallback 
 
     @Override
     public void onLastTaskLoaded(Task task) {
-
     }
-
-
 }

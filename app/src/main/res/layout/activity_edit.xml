@@ -1,45 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".presentation.edit.EditActivity"
-    android:orientation="vertical"
     android:focusable="true"
     android:focusableInTouchMode="true"
-    >
+    android:orientation="vertical"
+    tools:context=".presentation.edit.EditActivity">
 
-<include
-    layout="@layout/toolbar"
-    />
-<RelativeLayout
-    android:id="@+id/relative_with_buttons"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
-    <android.support.v7.widget.AppCompatImageButton
-        android:id="@+id/save_exit_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@android:drawable/ic_menu_save"
-        android:onClick="save_exit"/>
-    <android.support.v7.widget.AppCompatImageButton
-        android:id="@+id/delete_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="80dp"
-        android:src="@android:drawable/ic_menu_delete"
-        android:onClick="delete"/>
+    <include layout="@layout/toolbar" />
 
-    <android.support.v7.widget.AppCompatImageButton
-        android:id="@+id/notification_button"
+    <RelativeLayout
+        android:id="@+id/relative_with_buttons"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="160dp"
-        android:onClick="setNotification"
-        android:src="@drawable/ic_alarmclock" />
+        android:layout_height="wrap_content">
 
-</RelativeLayout>
+        <android.support.v7.widget.AppCompatImageButton
+            android:id="@+id/save_exit_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="save_exit"
+            android:src="@android:drawable/ic_menu_save" />
+
+        <android.support.v7.widget.AppCompatImageButton
+            android:id="@+id/delete_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="80dp"
+            android:onClick="delete"
+            android:src="@android:drawable/ic_menu_delete" />
+
+        <android.support.v7.widget.AppCompatImageButton
+            android:id="@+id/notification_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="160dp"
+            android:onClick="setNotification"
+            android:src="@drawable/ic_alarmclock" />
+
+    </RelativeLayout>
 
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
@@ -50,11 +49,11 @@
 
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:hint="текст заметки"
+            android:inputType="textCapSentences|textMultiLine"
             android:overScrollMode="always"
             android:scrollbarStyle="insideInset"
-            android:scrollbars="vertical"
-            android:hint="текст заметки"
-            android:inputType="textCapSentences|textMultiLine"/>
+            android:scrollbars="vertical" />
     </android.support.design.widget.TextInputLayout>
 
 
